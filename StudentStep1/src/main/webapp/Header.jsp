@@ -12,11 +12,16 @@
 		height: 20px;
 		padding: 5px;
 	}
+	span{
+		float: right;
+		color:black;
+	}
 </style>
 </head>
 <body>
 	<div id="header">
 		WPMS(Web Project Management System)
+		<span><a href="<%=request.getContextPath() %>/auth/login.jsp">Login</a></span>
 	</div>
 </body>
 </html>

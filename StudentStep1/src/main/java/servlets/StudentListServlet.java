@@ -1,6 +1,5 @@
 package servlets;
 
-import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -9,10 +8,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import vo.Student;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.Authenticator.RequestorType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
