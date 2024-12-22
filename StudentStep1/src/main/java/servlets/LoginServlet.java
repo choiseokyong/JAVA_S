@@ -1,5 +1,11 @@
 package servlets;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -7,11 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import jakarta.servlet.http.HttpSession;
+import vo.Student;
 
 
 @WebServlet("/auth/login")
@@ -20,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/auth/LoginForm.jsp");
 		rd.forward(request, response);
 	}
 
@@ -33,9 +36,10 @@ public class LoginServlet extends HttpServlet {
 		String query = null;
 		
 		try {
+			
 			ServletContext sc = this.getServletContext();
 			con = (Connection)sc.getAttribute("con");
-			query = "SELECT * FROM student WHERE name=?,password=?";
+			query = "SELECT * FROM student WHERE name=? AND password=?";
 			pst = con.prepareStatement(query);
 			pst.setString(1, request.getParameter("name"));
 			pst.setString(2, request.getParameter("pwd"));
@@ -43,8 +47,16 @@ public class LoginServlet extends HttpServlet {
 			
 			if(!rs.next()) {
 				
+				RequestDispatcher rd = request.getRequestDispatcher("/auth/LoginFail.jsp");
+				rd.forward(request, response);
 			}else {
 				
+				Student student = new Student();
+				student.setName(rs.getString("name"));
+				student.setPwd(rs.getString("password"));
+				HttpSession session = request.getSession();
+				session.setAttribute("student", student);
+				response.sendRedirect("../student/list");
 			}
 		}catch(Exception e) {
 			
@@ -52,7 +64,6 @@ public class LoginServlet extends HttpServlet {
 			try {
 				if(rs != null) rs.close();
 				if(pst != null) pst.close();
-				if(con != null) con.close();
 			}catch(SQLException e) {
 				
 			}

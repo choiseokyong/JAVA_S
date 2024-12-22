@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:useBean id="student" class="vo.Student" scope="session"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,13 @@
 <body>
 	<div id="header">
 		WPMS(Web Project Management System)
-		<span><a href="<%=request.getContextPath() %>/auth/login.jsp">Login</a></span>
+		<span>
+			<% if(student.getName() == null){  %>
+			<a href="<%=request.getContextPath() %>/auth/login">Login</a>
+			<% }else{ %>
+			<a href="<%=request.getContextPath() %>/auth/logout">Logout</a>
+			<% } %>
+		</span>
 	</div>
 </body>
 </html>
