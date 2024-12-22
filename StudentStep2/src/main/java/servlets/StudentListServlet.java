@@ -27,13 +27,10 @@ public class StudentListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			StudentDao studentDao = (StudentDao)sc.getAttribute("studentDao");
-			
 			ArrayList<Student> students =studentDao.selectAll();
-			
 			request.setAttribute("students", students);
 			RequestDispatcher rd = request.getRequestDispatcher("/student/StudentList.jsp");
 			rd.forward(request, response);
-				
 			
 		}catch(Exception e) {
 			request.setAttribute("error", e);
