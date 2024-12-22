@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpSession;
 import vo.Student;
 
 public class StudentDao {
@@ -19,6 +19,39 @@ public class StudentDao {
 		this.con = con;
 	}
 	
+	public Student login(String name,String pwd) throws Exception {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String query = null;
+		
+		try {
+			query = "SELECT * FROM student WHERE name=? AND password=?";
+			pst = con.prepareStatement(query);
+			pst.setString(1, name);
+			pst.setString(2, pwd);
+			rs = pst.executeQuery();
+			
+			if(!rs.next()) {
+				return null;
+			}else {
+				
+				Student student = new Student();
+				student.setName(rs.getString("name"));
+				student.setPwd(rs.getString("password"));
+				return student;
+				
+			}
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try {
+				if(rs != null) rs.close();
+				if(pst != null) pst.close();
+			}catch(SQLException e) {
+				
+			}
+		}
+	}
 	public int update(Student st) throws Exception {
 		PreparedStatement pst = null;
 		String query = null;

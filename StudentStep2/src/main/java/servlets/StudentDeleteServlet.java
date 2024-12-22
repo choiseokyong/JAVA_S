@@ -21,14 +21,11 @@ public class StudentDeleteServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection con = null;
-		
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			con = (Connection)sc.getAttribute("con");
-			StudentDao studentDao = new StudentDao();
-			studentDao.setConnection(con);
+			StudentDao studentDao = (StudentDao) sc.getAttribute("studentDao");
+			
 			studentDao.delete(Integer.parseInt(request.getParameter("id")));
 			
 			response.sendRedirect("list");

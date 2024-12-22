@@ -29,13 +29,10 @@ public class StudentAddServlet extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection con = null;
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			con = (Connection)sc.getAttribute("con");
-			StudentDao studentDao = new StudentDao();
-			studentDao.setConnection(con);
+			StudentDao studentDao = (StudentDao)sc.getAttribute("studentDao");
 			
 			Student st = new Student();
 			st.setName(request.getParameter("name"));

@@ -24,15 +24,13 @@ public class StudentListServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection con = null;
 		try {
-			ServletContext sc = request.getServletContext();
-			con = (Connection)sc.getAttribute("con");
-			StudentDao studentDao = new StudentDao();
-			studentDao.setConnection(con);
-			ArrayList<Student> student =studentDao.selectAll();
+			ServletContext sc = this.getServletContext();
+			StudentDao studentDao = (StudentDao)sc.getAttribute("studentDao");
 			
-			request.setAttribute("student", student);
+			ArrayList<Student> students =studentDao.selectAll();
+			
+			request.setAttribute("students", students);
 			RequestDispatcher rd = request.getRequestDispatcher("/student/StudentList.jsp");
 			rd.forward(request, response);
 				
