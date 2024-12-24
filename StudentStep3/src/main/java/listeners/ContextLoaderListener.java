@@ -28,6 +28,9 @@ public class ContextLoaderListener implements ServletContextListener {
 //			ds.setUsername(sc.getInitParameter("username"));
 //			ds.setPassword(sc.getInitParameter("password"));
 			
+			// Server의 자원을 사용하는 방법 - server > context.xml, web.xml 작업
+    		// 자원을 알아서 반납하기 때문에 destroy 할 필요없음.
+			
 			InitialContext ic = new InitialContext();
 			DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/student");
 			StudentDao studentDao = new StudentDao();
